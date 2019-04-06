@@ -22,7 +22,6 @@ if($_FILES["file"]["name"] != '')
  <body>
   <br /><br />
   <div class="container" style="width:700px;">
-   <h2 align="center">Upload File without using Form Submit in Ajax PHP</h2>
    <br />
    <label>Select Image</label>
    <input type="file" name="file" id="file" />
