@@ -1,0 +1,36 @@
+<?php
+if(isset($_POST['submit'])) {
+    //check uploaded file
+    $file = $_FILES['image'];
+    //store file temporarily
+    $fileName = $_FILES['image']['name'];
+    $fileTmpName = $_FILES['image']['tmp_name'];
+    $fileSize = $_FILES['image']['size'];
+    $fileError = $_FILES['image']['error'];
+    $fileType = $_FILES['image']['type'];
+    //check file extension
+    $fileExt = explode('.', $fileName);
+    $newFileExt = strtolower(end($fileExt));
+    //set allowed dile type
+    $extension = array('jpg', 'jpeg', 'png');
+    if(in_array($newFileExt, $extension)) {
+        // check for error
+        if($fileError === 0) {
+        //set file limit
+            if($fileSize < 3000000) {
+        //assign name to uploaded file
+            $newFileName = uniqid('', true).".".$newFileExt;
+            $newFile = 'uploads/'.$newFileName;
+            move_uploaded_file($newFileName, $newFile);
+            header("Location: index.php?successfullyuploaded");
+            } else {
+                echo "Image file is larger than 3Mb";
+            }
+        } else {
+            echo "Oops! an error occured, try re-uploading file!";
+        }
+    } else {
+        echo "Image extension should be in .jpg, .jpeg, or .png";
+    }
+}
+?>
