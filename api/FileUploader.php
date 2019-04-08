@@ -12,8 +12,9 @@ class FileUploader
     protected $inputName;
     protected $acceptedFileTypes;
     protected $maxFileSize;
-    protected $uploadDirectory = 'uploads/';
+    protected $uploadDirectory = 'api/uploads/';
     protected $fileName;
+    protected $pathToFile;
 
 
     public function __construct($inputName)
@@ -22,7 +23,8 @@ class FileUploader
             throw new Exception("File Is not uploaded");
         }
         $this->inputName = $inputName;
-        $this->fileName = uniqid('', true).'.'.$this->getFileExtension();
+        $this->fileName = $this->getFileName();
+        $this->pathToFile = $this->uploadDirectory . $this->fileName;
     }
 
     public function handleFileUpload(){
@@ -51,9 +53,12 @@ class FileUploader
 
     protected function upload(){
 
-        $destination = trim( $this->uploadDirectory,'/').'/'.$this->fileName;
-        return move_uploaded_file($this->getTempFilename(),$destination);
+        return move_uploaded_file($this->getTempFilename(),$this->pathToFile);
+    }
 
+    public function getFilePath($path = null)
+    {
+        return $_SERVER['HTTP_HOST'] . "/" . ($path ?? $this->pathToFile);
     }
 
 
